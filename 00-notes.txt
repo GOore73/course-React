@@ -1,0 +1,162 @@
+Lista de reproducción curso: 
+
+https://youtube.com/playlist?list=PL3aEngjGbYhkg3AR-cytsvQIIGp1JgrY_
+
+________________________________________________________________________
+VIDEO #2, comparación Create React APP / Vite / Next
+------------------------------------------------------------------------
+
+Algunos conceptos. 
+
+Cuando se "codifica en React" creando componentes, para que ese código pueda ser leido en un navegador, necesita una "traducción" a js. Estas herramientas que realizan esta traducción se denominan transpilador. Hay muchos y el mas famoso es BABEL. 
+
+Adicionalmente, no solo React necesita ser "traducido" sino que el resto de los paquetes que facilitan CSS, HTML, etc, también. Entonces existen otros productos que hacen de intermediarios hacia el navegador en el formato de un servidor que devuelven a los nagegadores código que pueden interpretar. Estos paquetes se denominan Empaquetadores. WebPack es uno de los mas difundidos. 
+
+Por último hay dependencias que hacen todo esto por si mismos y entonces los desarrolladores los incorporan y se "olvidan" de lo que hay por detrás. 
+
+Algunos de estos paquetes son:
+Create React APP
+Vite
+Next
+
+>> Create React APP
+npx create-react-app [nombre]
+Ejemplo:
+npx create-react-app prueba-crea
+
+Opinión del video: no usar nunca Create React APP, usar Vite.
+
+>> Vite
+npm ini vite@latest
+cd [carpeta del proyecto]
+npm i
+
+Opinión, para casi todas las aplicaciones, funciona muy bien. 
+
+Vite es un framework de react, porque es un entorno de trabajo con todas las herramientas para que funciones como un proyecto real.
+
+>> Next
+npx create-next-app
+
+Opinión, cuando usarlo: cuando queremos llegar a producción algo "serio" y con mucho conocimiento de React.
+
+________________________________________________________________________
+VIDEO #03 ¿Cómo funciona un DEV SERVER?
+------------------------------------------------------------------------
+
+Todo este ejemplo se realiza con vite.
+
+Todos los proyectos de react, parten de un index.html; cuando alguien haga la petición de este archivo, vamos a devolverle este file. 
+
+El run dev, intenta primero buscar un archivo estático. Si lo encuentra, lo carga, sino carga el index.html
+
+Siempre busca un archivo estático, si no lo encuentra devuelve index.html.
+Allí en index.html, con js se identificará la ruta y se mostrará tal contenido. 
+La excepción, es si pones una extensión en una ruta .svg por ej, no nos va a devolver el index, sino que buscará un file en si y si no lo encuentra dará un error.
+
+Empieza siempre buscando en public y luego en el resto. Si pedis un recurso si hay un archivo estático en public, lo devuelve, sino lo encuentra busca en todo el proyecto, sino lo encuentra devuelve el index.html
+si tiene extensión busca un archivo. 
+
+
+Diferencias entre desarrollo y producción. 
+En desarrollo, si se hace f12 y se va a source, se verá que se agregan algunas líneas en el main.jsx por ejemplo para que se recargue con cada grabar. 
+
+En producción es un poco distinto.
+Para hacer un pase a producción, se ejecuta 
+
+>> npm run build
+
+, eso hace una minificación de todos los archivos, y deja todo en la carpeta assets, listo para enviar a producción. 
+
+Para probar se puede ejecutar npm run preview y en otro puerto correrá esta versión minificada. 
+
+________________________________________________________________________
+VIDEO #04 ESLINT y PRETTIER en REACT
+------------------------------------------------------------------------
+
+lint: qué
+formater: cómo
+
+Cuando se comparte código, se acuerdan los formateadores y sus configuraciones, así todos comparten lo mismo, porque sino se leen "cambios fantasmas", que es cuando una persona abre y se formatea el código con un aspecto distinto, por con una indentación distinta a la de otro usuario. 
+
+Ambos entonces ESLINT y PRETTIER, permitirán esta estandarización. 
+
+>> npm i -D eslint
+
+luego hay que configurar los parámetros. Esta configuración se puede hacer a mano, pero no es necesario ni recomendable. En su lugar se puede hacer:
+
+>> npx eslint --init
+
+A partir de esto se irán generando errores o warnings sobre la escritura.
+Por ej, declarar una variable y no usarla, podría ser un error o un warn.
+Cuando se hace foco en el error, se mostrará el valor que luego se puede configurar en .eslintrc.cjs. 
+Por ej una variable que no se usa, no-unused-vars es el parámetro.
+Para cambiar el comportamiento, en rules dentro de .eslintrc.cjs se agregará una línea:
+'no-unused-vars': 'warn',
+los valores pueden ser, off, on, o warn.
+
+>> npm i -D prettier
+
+Allí se realizarán algunas configuraciones cruzadas entre eslint y prettier.
+Se puede agregar entonces un file .prettierrc para agregar algunas configuraciones allí. 
+Se puede ir entonces a la configuración en la página de prettier, en DOCs - Options, y allí tiene los valores que se pueden agregar en formato json en el .prettierrc. En la documentación dice cómo sería la forma de override. 
+
+Finalmente para resolver todos los conflictos, instalar:
+>> npm i -D eslint-config-prettier
+
+Agregar en el .eslintrc.cjs, y en extends agregar:
+'eslint-config-prettier', cuando hay un conflicto, rige prettier.
+
+También considerar que no se debe aplicar prettier ni ningún formato a los archivos que ya están en el build. Entonces así como hay un .gitignore, también hay que configurar un .prettierignore i gual  para el eslint: .slintignore
+el node_modules ya está exceptuado en ambos casos por defecto.
+
+Finalmente para que quede asociado tal cual a todo el proyecto y a todos lo que puedan llegar a accederlo, en el package-json, agregar: 
+"format": "prettier --write ."
+"lint": "eslint --fix . --ext .js,.jsx"
+
+luego se puede hacer npm format y formateará todo, al igual que npm lint
+En npm lint, puede aparecer un warning relacionado con la versión. 
+Para elminiar ese warning, hay que agregar esto en el .eslintrc.cjs:
+debajo de env
+settings: {
+  react: {
+    version:'detect'
+  }
+},
+
+________________________________________________________________________
+VIDEO #05 JSX, Etiquetas
+------------------------------------------------------------------------
+Childrens es cualquier cosa que esté entre etiquetas. Al igual que en html, pueden ser otras etiquetas o texto simple. 
+En jsx un children puede ser una expresión, que se pone entre {} y una vez evaluadas, devolverá un resultado. 
+
+se pueden introducir textos, números. NO se pueden introducir objetos. undefined, null, true/false, no devuelven nada para pintar. Una función se puede ejecutar y pintará su resultado si es un elemento pintable. SI puede ser un array, cada elemento producirá su propio renderizado. Puede ser otra etiqueta.
+
+Props, son lo que en html son atributos. 
+No todos se llaman igual que en html
+id por ej se llama igual
+class se llama className en jsx
+todas en camelCase
+por ej tabindex, en jsx es tabindex
+
+aria es una excepción, igual data- se mantienen con su guión.
+
+
+________________________________________________________________________
+VIDEO #06 Estructurar y establecer jerarquías para componentes REACT
+------------------------------------------------------------------------Partiendo de un componente APP 
+
+Para modularizar un componente, siempre es un componente por archivo y su nombre tiene relación con el nombre del componente.
+Ej. componente VideoItem
+Lo mas usual es que esté dentro de src->components
+
+Dos formas de llamarlo. 
+1) En primera mayúsculas, tal cual se llama el componente. VideoItem.jsx
+2) video-item.jsx
+
+El componente APP también se modulariza. Como es el nodo raíz, algunos suelen decidir ponerlo fuera de components directamente en src, digamos al mismo nivel que main.jsx.
+Si bien puede tener props, se estila que no contenga propiedades, pero si fuera necesario podría tenerlas. 
+
+
+
+
