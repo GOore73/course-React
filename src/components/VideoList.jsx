@@ -1,6 +1,8 @@
+import styles from './VideoList.module.css';
+
 const VideoList = ({ title, children }) => {
   return (
-    <div>
+    <div className={`${styles.wrapperList} ${styles.margin}`}>
       <h2>{title}</h2>
       {children || <p>Sin videos aún</p>}
     </div>

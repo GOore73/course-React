@@ -1,3 +1,4 @@
+import styles from './App.module.css';
 import VideoList from './components/VideoList';
 import VideoItem from './components/VideoItem';
 
@@ -7,7 +8,7 @@ const App = () => {
     Siempre tiene que haber un único contenedor de primer nivel.
     no se puede hacer un return de mas de una etiqueta. Entonces qué sucedería si necesito poner mas de un VideoList. En ese caso se necesita un contenedor superior. Por ejemplo se podría usar un <div>, sin embargo uno podría no querer usar ese. Se puede usar una etiqueta genérica Fragment, que se debe importar de React para poder utilizarla. Pero existe una etique mas genérica aún que es una etiqueta vacía <></>, como en este ejemplo: 
     */
-    <>
+    <div className={styles.container}>
       <VideoList title='Curso de React'>
         <VideoItem
           title='Componentes'
@@ -31,7 +32,7 @@ const App = () => {
         ></VideoItem>
       </VideoList>
       <VideoList title='Curso de Next JS'></VideoList>
-    </>
+    </div>
   );
 };
 

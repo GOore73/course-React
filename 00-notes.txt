@@ -158,5 +158,68 @@ El componente APP también se modulariza. Como es el nodo raíz, algunos suelen 
 Si bien puede tener props, se estila que no contenga propiedades, pero si fuera necesario podría tenerlas. 
 
 
+________________________________________________________________________
+VIDEO #07 Agregar CSS A REACT
+------------------------------------------------------------------------la propieda style va en la etiqueta para style en línea, luego de la etiqueta como si fuera html. Pero es un objeto. Y las propiedades están en camelCase.
+
+a) style
+
+<div style={{
+  width: '100',
+  maxWidth: '600px'
+}}>
+...
+</div
+
+Claro que esto no es lo óptimo, siempre los navegadores funcionan de forma mas óptima interpretando css que styles en línea. 
+Cuando se usan las etiquetas style, casi siempre con el dinamismo. 
+
+b) crear una clase css, importar el index.css
+
+En index.css se van angregando clases con sus estilos y dentro de los componentes, se agrega la propiedad 
+<div className='nombreDeClase'>
+...
+</div>
+
+El index.css se hace gigante según cuantos componentes tenga el proyecto. Entonces se puede tambié modularizar el css.
+Se hace un archivo con el mismo nombre del componente .css y algunos eligen también ponerlo dentro de la misma carpeta de componentes. 
+
+entonces ahora cada componente importa su propia hoja de estilos.
+Igualmente aquí, es parecido a tener todo en un index.css, pero distribuido. Entonces también se puede hacer algo en lo que se empiecen a repetir nombres de clases y entonces se hace complicado de mantener y puede haber colisiones. 
+
+c) Lograr que no se repitan los nombres de las clases, entonces que se generen automáticamente, CSS MODULES
+
+Para generara un módulo de CSS, (esto quiza es por el entorno vite), se asigna 
+.module.css y luego la extensión css
+para importarlo se usa algo distinto:
+import styles from './VideoItem.module.css';
+y className={styles.container} va como una propidad del objeto styles y .container es el nombre de la etiqueta css.
+allí aunque se llama container, iternamente el módulo le asigna un nombre aleaotorio. 
+
+Si la clase tiene un nombre en el css: wrapper-list, en la propiedad styles dirá:
+className={styles['wrapper-list']}
+Por eso no se recomiendan los - en module css, mejor camelCase wrapperList
+
+Cómo hago para agregar dos clases a un componente. 
+con template strings agregando un espacio:
+className={`${styles.wrapperList} ${styles.margin}`}
+
+d) Finalmente reset de CSS
+Esta hoja es la que iguala y hace homogéneos los estilos que aplican por defecto los distintos navegadores. 
+Para ello se puede usar una librería como modern-normalize. 
+Como cualquier paquete se podría instalar con npm install modern-normalize
+Pero en el video se sugiere copiar directamente la hoja de estilos desde la página de modern:
+https://github.com/sindresorhus/modern-normalize
+Download Normal
+
+El video sugiere llevar los css raíz a una carpeta dentro del src, y para este reset llamarlo por ejemplo normalize.css
+También sugiere llevar allí el index.css y dentro del index, importar el normalize. Entonces en el main.jsx solo tengo el import del index.css
+
+
+e) sass, es otra forma de escribir css. En el video se repasa muy rápido, consiste en nombrar distinto los archivos css x scss e instalar npm i -D sass. No lo vi muy en detalle.
+
+
+
+
 
 

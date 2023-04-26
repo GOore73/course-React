@@ -60,7 +60,7 @@ Cómo modularizarlo, extraerlo de este main.jsx y llamarlo
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 import App from './App';
-import './index.css';
+import './Styles/index.css';
 
 // react 18:
 const container = document.getElementById('root');
