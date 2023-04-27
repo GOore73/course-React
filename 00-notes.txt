@@ -219,6 +219,29 @@ También sugiere llevar allí el index.css y dentro del index, importar el norma
 e) sass, es otra forma de escribir css. En el video se repasa muy rápido, consiste en nombrar distinto los archivos css x scss e instalar npm i -D sass. No lo vi muy en detalle.
 
 
+________________________________________________________________________
+VIDEO #08 Renderizado y virtual DOM
+------------------------------------------------------------------------
+
+El VDOM no almacena todo el DOM que son nodos muy complejos, sino que arranca desde el DIV el contenedor root. 
+
+Cuando se carga el navegador, solo carga el html que tiene digamos, la etiqueta root o container.
+REACT traslada el VDOM al DOM y se visualiza en la pantalla. RENDERIZADO, inicia en un nodo. El RENDERIZADO se inicia en el método root.render(), que recibe un nodo del VDMO, que sería el componente APP.
+
+Cada nodo puede llamar y renderizar otro y así de manera recursiva. 
+
+Por ejemplo, si al root.render() lo pones en un settimeout, a los 5 seg, en las herramientas de desarrollo del navegador, se verá el div "root" del index html vacío, y a los 5 segundos se completará con lo renderizado por REACT a partir de App. Crea el VDMO y lo traslada al DOM.
+
+El orden en que se renderiza es siempre siguiendo la línea de cada componente. En este ejemplo, será primero APP, luego un video list y luego un video item; luego seguirá el próximo vide list con video item y así. Es decir cada componente que llama a otro, se ejecuta hasta el final de la cadena. 
+
+Renderizar es generar un objeto, dado que todo lo que renderiza REACT es un objeto. Puede ser una etiqueta nativa o un componente. 
+Cuando es una etiqueta nativa como un div, el type del objeto es "div". 
+
+Cuando es un componente, el type del objeto es ()=>{}, es decir una función. Que al renderizarse ejecutará con las props que están también como propiedades de ese objeto Symbol(react.element)
+
+Al final todo tiene que ser un componente nativo al que se transforma el componente.
+
+Esto funciona así, porque luego del renderizado inicial, se pueden renderizar nodos en particular. 
 
 
 
