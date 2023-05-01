@@ -59,8 +59,15 @@ Cómo modularizarlo, extraerlo de este main.jsx y llamarlo
 
 import ReactDOM from 'react-dom/client';
 import React from 'react';
-import App from './App';
-import './Styles/index.css';
+// import App from './App';
+// import App from './AppUseState';
+// import App from './App10Forms';
+// import App from './App10bFormsLogin';
+// import App from './App11SideEffects';
+// import App from './App12SideEffectsDependencias';
+// import App from './App13Cleanup';
+import App from './App13bCleanup';
+// import './Styles/index.css'; //hasta clase 08
 
 // react 18:
 const container = document.getElementById('root');

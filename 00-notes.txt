@@ -244,5 +244,127 @@ Al final todo tiene que ser un componente nativo al que se transforma el compone
 Esto funciona así, porque luego del renderizado inicial, se pueden renderizar nodos en particular. 
 
 
+________________________________________________________________________
+VIDEO #09 Estados
+------------------------------------------------------------------------
+Manejo de dinamismo. 
+Necesitamos que nuestros componentes tengan un estado. 
+
+Un componente tendrá una serie de características jsx y props estáticas y luego un estado.
+
+renderizar es ejecutar la función de un componente y permitir que react lo renderice en el navegador. 
+
+Se puede hacer renderizados selectivos. 
+
+hook usestate
+
+Hooks son funciones de la api de react y sirven para gestionar algunas de las características de react en nuestros componentes. 
+
+Algunos de ellos:
+Basics (son los core)
+usestate
+useEffect
+useContext
+
+Additional...
+son otros que agregan características. 
+
+En el AppUseState, se describe un ejemplo, el cual será un simple contador. 
+El ejemplo es el renderizado de un componente Likes que es un botón al  cual se le pasa como parámetro un contador likes. En la función OnClik, se incrementa el contador en 1, pero el incrementar una variable en Javascritp no produce un resultado en el renderizado del componete. Se hace click, dentro de la función se incrementa el contador, pero el renderizado del componente quedó con el primer valor del parámetro. 
+
+Necestiamos que se haga un nuevo renderizado, entonces para eso necesito creado un estado con el hook useState, este arranca con un valor que puede ser fijo o venir desde un params. 
+El state es un array, siempre con dos elementos. [0]: es el estado actual y [1] es una función. 
+Entonces un comando:
+const state = useState(0);
+devuelve un array state con dos componentes [0, f]. Puedo destructurarlo:
+conts [state, setState] = useState(0);
+Por convención entonces puedo llamar a estas variables destructuradas de una manera mas conveniente. Por ejemplo, state en este ejemplo, se representa por likes y por la misma convención llamamos a la función setLikes, es decir set + la variable que monitorea el estado. 
+Esta función es la que alterará el valor de la variable de estado y entonces llamará un nuevo renderizado sobre el nodo, sobre el componente particular. 
+
+Cuando la comparación no es un valor primitivo, sino un objeto o un array, lo que se compara es una referencia. 
+const a = {}
+const b = a; igualo las referencias. 
+b.x = 7
+a.x === b.x; devuelve true porque se apunta a la misma referencia, no son dos objetos distintos. 
+
+si queremos hacer dos objetos para luego compararlos tengo que hacer
+const a = {}
+const b = {...a}     crea otro objeto b
+
+Entonces cuando queremos validar cambios en objetos con useState, sino hago una copia, el useState({valor: value}), se lo va a asignar a la variable, pero a la misma referencia (como en const b = a), entonces para la función, este valor no cambiará. 
+
+Importante. Si al useState() en lugar de enviarle un valor fijo o un parámetro, le paso una función, la particularidad es que esa función, que debe devolver el valor inicial del estado, ya NO se ejecutará mas. En el ejemplo sería el caso de getInitialState().
+Esta función NO puede ser asíncrona porque esta devuelve una promesa que no se entiende por el renderizado de react. 
 
 
+________________________________________________________________________
+VIDEO #10 Formularios en REACT inputs controlados
+------------------------------------------------------------------------
+1. Gestionar formularios no controlados. 
+En este enfoque, los cambios se tienen que realizar detectando un cambio con useState y en algún evento como un onSubmit por ejemplo. Dentro del onSubmit se ejectua la función de cambio de estado y el resultado se renderiza. 
+
+También se puede poner la función de cambio del useState en el evento onChange del input. 
+
+2. Gestionar formularios controlados. 
+Cuando se habla de controlado, implica que el estado de un input lo controla directamente REACT a través de un estado y la propiedad value de los inputs
+
+el value en un input, es distinto al que tiene en html que se entiende como el valor por defecto (el que se muestra grisado). Aquí para REACT el value es el valor actual. 
+
+entonces yo puedo enviarle a value el valor de la variable de useState
+value={search}
+el valor de search lo voy a cambiar desde la función del useState en el onChange, o desde cualquier otro lugar.
+
+Depende de la necesidad podremos usar uno u otro modelo, pero NO un mix, aunque lo soporta correctamente. 
+
+________________________________________________________________________
+VIDEO #11 SIDE EFFECT y USE EFFECT 
+------------------------------------------------------------------------
+En el dinamismo, no todo es renderizar cada vez que hay un cambio. Se podría por ejemplo, agregar un string de búsqueda a la url, cambiar el ícono de la aplicación, registrar métricas, etc. Desde el punto de vista del usuario, estos son acciones secundarias y desde el punto de vista del desarrollador, estas acciones secundarias se llaman side effects. 
+
+Para eso REACT proporcina el hook de sideEffects
+
+- Son consecuencia de un cambio de estado,
+- se ejectuan después del renderizado
+- el orden en el que se lanzan no es importante
+- tienen implicaciones externas, es decir a diferencia del status que tiene efecto sobre el propio componente, esta acción puede tener implicaciones fuera. 
+
+cuando es un side effect y cuando no
+- definir la tarea
+- detectar las acciones
+- elegir cuál es la acción principal.
+
+En el ejemplo jsx se tiene un contador. 
+El contador tiene dos tareas, actualizar la interfaz del usuario con el h1 y el título de la ventana. Podemos decir que la acción principal es actualizar el h1 y actualizar el document.title sería un side effect. 
+
+Si voy a agregando botones +2 +3 por ejemplo en los que en cada uno haga una actualización del document.title, tengo posibilidades de omitirlo. Adicionalmente, la renderización se producirá luego que se hagan estas acciones side. Es decir podemos estar desenfocando la prioridad de renderizar la acción principal condicionándolo a la ejecución de las sideEffects. 
+
+Para eso se usa el useEffect. 
+se llama siempre dentro de un componente useEffect(()=>{}) y ejecutará una función luego de todos los renderizados e IMPORTANTE, con los VALORES ACTUALIZADOS. 
+El useEffect se ejecuta luego que se renderiza todo y esa función se ejecuta de modo asíncrona. 
+y algo importante también es que se ejecuta ANTES del siguiente render del componente. 
+
+
+________________________________________________________________________
+VIDEO #12 USE EFFECT y ARRAY DE DEPENDENCIAS 
+------------------------------------------------------------------------
+Con las dependencias se podrá manejar en qué condiciones se ejecutará un useEffect. 
+
+En el ejemplo se agrega un botón para incrementar el step, es decir cuántos pasos aumentará el contador. Se deja dentro del useEffect un console.log, y se ve que aunque se cambie el step, lo mismo se ejecuta la función del useEffect, y eso no es necesario porque el valor de count no cambia, sino solo cuando se aprieta el botón incrementar count.
+
+Para esto en la función de useEffect, como 2do argumento, le podemos pasar un array de dependencias y allí le pasaremos qué cambios en qué valores se tomarán en cuenta para que se ejecute el useEffect. 
+
+Si el array queda vacío, le estamos indicando que se ejecute una sola vez. Sería similar a poner un valor fijo en el array ['marca'], pero se recomienda que sea vacío. 
+
+NO hay forma de evitar que se ejecute la primera vez. Si no queremos el efecto en la primera vez, tenemos que poner una lógica, como un if para identificar que se trata de la primera vez y sobre esa lógica decidir qué si y qué no. 
+
+En general en el array van estados o props.
+
+
+________________________________________________________________________
+VIDEO #13 LIMPIAR USE EFFECT, RETURN y su CLEANUP 
+------------------------------------------------------------------------
+la función de useEffect, puede retornar una nueva función y en este caso, esta función se ejecutará justo antes de la función useEffect.
+
+Esta función de cleanup también se ejecutará cuando se desmonte el componente. 
+
+Si en el useEffect, se hizo un eventListener, en la función cleanup tiene que tener su correspondiente removeEventListener. 
